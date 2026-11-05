@@ -996,7 +996,7 @@ footer a{color:var(--muted)}
   setLang(start,false);
   window.addEventListener('hashchange',function(){var l=fromHash();if(l)setLang(l,false);});
   document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang,true);window.scrollTo(0,0);});});
-  var ENDPOINT='https://formsubmit.co/ajax/';
+  var ENDPOINT='https://formsubmit.co/ajax/', FORM_TO='jerohanan@gmail.com';
   ['en','he'].forEach(function(l){
     var p=(l==='he'?'he-':''),m=MSG[l];
     function $(id){return document.getElementById(p+id);}
@@ -1020,7 +1020,7 @@ footer a{color:var(--muted)}
         var body=d.idea+'\n\n'+d.name+'\n'+d.email+(d.phone?'\n'+d.phone:'');
         setTimeout(function(){location.href='mailto:'+email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);},900);
       }
-      fetch(ENDPOINT+encodeURIComponent(email),{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
+      fetch(ENDPOINT+encodeURIComponent(FORM_TO),{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
         .then(function(r){return r.json().catch(function(){return {};}).then(function(j){return {ok:r.ok,j:j};});})
         .then(function(res){
           if(res.ok&&String(res.j.success)==='true'){st.className='form-status';st.textContent=m.ok;form.reset();}
