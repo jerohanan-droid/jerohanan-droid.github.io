@@ -996,7 +996,7 @@ footer a{color:var(--muted)}
   setLang(start,false);
   window.addEventListener('hashchange',function(){var l=fromHash();if(l)setLang(l,false);});
   document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang,true);window.scrollTo(0,0);});});
-  var ENDPOINT='https://formsubmit.co/ajax/', FORM_TO='jerohanan@gmail.com';
+  var ENDPOINT='https://api.web3forms.com/submit', FORM_KEY='e82b2310-4dd8-46f7-9696-8e191b61c1e7';
   ['en','he'].forEach(function(l){
     var p=(l==='he'?'he-':''),m=MSG[l];
     function $(id){return document.getElementById(p+id);}
@@ -1014,13 +1014,13 @@ footer a{color:var(--muted)}
       if(!d.name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)||!d.idea){st.className='form-status err';st.textContent=m.need;return;}
       btn.disabled=true;btn.textContent=m.sending;st.className='form-status';st.textContent='';
       var subject=m.subj+d.type+' ('+d.name+')';
-      var payload={name:d.name,email:d.email,phone:d.phone||'-',service:d.type,message:d.idea,language:l==='he'?'Hebrew':'English',_subject:subject,_replyto:d.email,_template:'table',_captcha:'false'};
+      var payload={access_key:FORM_KEY,subject:subject,from_name:'H&G Productions website',name:d.name,email:d.email,phone:d.phone||'-',service:d.type,message:d.idea,language:l==='he'?'Hebrew':'English'};
       function fallback(){
         st.className='form-status err';st.textContent=m.fail;
         var body=d.idea+'\n\n'+d.name+'\n'+d.email+(d.phone?'\n'+d.phone:'');
         setTimeout(function(){location.href='mailto:'+email+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);},900);
       }
-      fetch(ENDPOINT+encodeURIComponent(FORM_TO),{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
+      fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
         .then(function(r){return r.json().catch(function(){return {};}).then(function(j){return {ok:r.ok,j:j};});})
         .then(function(res){
           if(res.ok&&String(res.j.success)==='true'){st.className='form-status';st.textContent=m.ok;form.reset();}
